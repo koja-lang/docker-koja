@@ -6,14 +6,16 @@ The image contains the `koja` compiler, the `koja-lsp` language server, and the 
 
 ## Supported tags
 
-| Tag                        | Base                 |
-| -------------------------- | -------------------- |
-| `0.16.0`, `0.16`, `latest` | `debian:trixie-slim` |
+| Tag                        | Dockerfile   | Base                 |
+| -------------------------- | ------------ | -------------------- |
+| `0.16.0`, `0.16`, `latest` | [0.16](0.16) | `debian:trixie-slim` |
 
 Images are published for `linux/amd64` and `linux/arm64` to two registries:
 
 - Docker Hub: `kojalang/koja`
 - GitHub Container Registry: `ghcr.io/koja-lang/koja`
+
+Each maintained version keeps its Dockerfile in a `major.minor` directory. A push to `main` and a monthly schedule rebuild and republish every maintained version, so base image security fixes reach older tags too. The workflow can also run manually, as a dry run by default or with its `push` input set to publish.
 
 ## Quick start
 
@@ -67,6 +69,12 @@ The release binaries link against glibc. An Alpine image needs musl builds of th
 ## Tag policy
 
 A version tag always installs that exact Koja version. Version tags are never re-pointed to a different Koja release. Tags can be rebuilt on an updated base image so that base security fixes reach users. The `latest` and minor tags (for example `0.16`) move forward with releases.
+
+## Releasing a new version
+
+1. Run `./update.sh <version>`. The script stamps `<major.minor>/Dockerfile` with the version and its release checksums, creating the directory from the newest existing one when needed.
+2. Open a PR. Merging to `main` builds and publishes every maintained version, with `latest` pointing at the newest.
+3. To drop support for a version, delete its directory. Published tags stay on the registries.
 
 ## License
 

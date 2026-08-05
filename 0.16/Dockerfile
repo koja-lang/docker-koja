@@ -16,19 +16,16 @@ RUN apt-get update \
         libc6-dev \
     && rm -rf /var/lib/apt/lists/*
 
-ARG KOJA_VERSION=0.16.0
-ARG KOJA_SHA256_AMD64=2947209065f9badcea58ddd326ccbaf74dc3ac4a259f3cb809a2a3a6ce06ac89
-ARG KOJA_SHA256_ARM64=2488f3e60810e23fbf84cca44acb41891c4f4c9345fe4e5e032f94b632c1472c
-ARG TARGETARCH
+ENV KOJA_VERSION=0.16.0
 
-ENV KOJA_VERSION=$KOJA_VERSION
+ARG TARGETARCH
 
 RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends curl; \
     case "$TARGETARCH" in \
-        amd64) target="linux-x86_64"; sha256="$KOJA_SHA256_AMD64" ;; \
-        arm64) target="linux-arm64"; sha256="$KOJA_SHA256_ARM64" ;; \
+        amd64) target="linux-x86_64"; sha256="2947209065f9badcea58ddd326ccbaf74dc3ac4a259f3cb809a2a3a6ce06ac89" ;; \
+        arm64) target="linux-arm64"; sha256="2488f3e60810e23fbf84cca44acb41891c4f4c9345fe4e5e032f94b632c1472c" ;; \
         *) echo "unsupported architecture: $TARGETARCH" >&2; exit 1 ;; \
     esac; \
     name="koja-v${KOJA_VERSION}-${target}"; \
