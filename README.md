@@ -1,5 +1,9 @@
 # docker-koja
 
+[![Publish](https://github.com/koja-lang/docker-koja/actions/workflows/publish.yml/badge.svg)](https://github.com/koja-lang/docker-koja/actions/workflows/publish.yml)
+[![Docker Hub](https://img.shields.io/docker/v/kojalang/koja?sort=semver&label=docker%20hub&logo=docker&logoColor=white)](https://hub.docker.com/r/kojalang/koja)
+[![ghcr.io](https://img.shields.io/badge/ghcr.io-koja--lang%2Fkoja-blue?logo=github)](https://github.com/koja-lang/docker-koja/pkgs/container/koja)
+
 Docker images for the [Koja](https://github.com/koja-lang/koja) compiler toolchain.
 
 The image contains the `koja` compiler, the `koja-lsp` language server, and the tools that `koja` invokes: `gcc`, `g++`, and `libc6-dev` for linking, `git` for `koja deps get`, and `ca-certificates`. The standard library is embedded in the compiler binary. Images install the prebuilt binaries from the matching [GitHub release](https://github.com/koja-lang/koja/releases), verified against pinned checksums.
