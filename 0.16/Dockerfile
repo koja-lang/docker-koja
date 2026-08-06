@@ -5,15 +5,15 @@ LABEL org.opencontainers.image.source="https://github.com/koja-lang/docker-koja"
       org.opencontainers.image.licenses="MIT"
 
 # koja build shells out to cc and links -lstdc++ (BoringSSL's libssl
-# is C++), koja deps get shells out to git. g++ provides the
-# libstdc++ dev files.
+# is C++), koja deps get shells out to git. libstdc++-14-dev covers
+# the -lstdc++ link without pulling in the g++ compiler.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         ca-certificates \
-        g++ \
         gcc \
         git \
         libc6-dev \
+        libstdc++-14-dev \
     && rm -rf /var/lib/apt/lists/*
 
 ENV KOJA_VERSION=0.16.0

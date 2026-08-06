@@ -108,3 +108,16 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: ${{ env.SHOULD_PUSH == 'true' }}
           tags: ${{ steps.meta.outputs.tags }}
+
+  readme:
+    if: github.event_name != 'workflow_dispatch' || inputs.push
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - name: Sync README to Docker Hub overview
+        uses: peter-evans/dockerhub-description@v5
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: kojalang/koja
+          short-description: Koja compiler toolchain

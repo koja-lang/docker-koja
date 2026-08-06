@@ -6,7 +6,9 @@
 
 Docker images for the [Koja](https://github.com/koja-lang/koja) compiler toolchain.
 
-The image contains the `koja` compiler, the `koja-lsp` language server, and the tools that `koja` invokes: `gcc`, `g++`, and `libc6-dev` for linking, `git` for `koja deps get`, and `ca-certificates`. The standard library is embedded in the compiler binary. Images install the prebuilt binaries from the matching [GitHub release](https://github.com/koja-lang/koja/releases), verified against pinned checksums.
+The image contains the `koja` compiler, the `koja-lsp` language server, and the tools that `koja` invokes: `gcc`, `libc6-dev`, and `libstdc++-14-dev` for linking, `git` for `koja deps get`, and `ca-certificates`. The standard library is embedded in the compiler binary. Images install the prebuilt binaries from the matching [GitHub release](https://github.com/koja-lang/koja/releases), verified against pinned checksums.
+
+For GitHub Actions CI without a container pull, [setup-koja](https://github.com/koja-lang/setup-koja) installs the toolchain straight onto the runner.
 
 ## Supported tags
 
@@ -59,16 +61,18 @@ If you need a different base image, for example one with extra C libraries, copy
 ```dockerfile
 FROM your-base:tag
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates g++ gcc git libc6-dev \
+    && apt-get install -y --no-install-recommends ca-certificates gcc git libc6-dev libstdc++-14-dev \
     && rm -rf /var/lib/apt/lists/*
 COPY --from=kojalang/koja:0.16.0 /usr/local/bin/koja /usr/local/bin/
 ```
 
-The packages cover what `koja` invokes: `gcc`, `g++`, and `libc6-dev` for the link step, `git` for `koja deps get`, and `ca-certificates` for fetching dependencies over HTTPS.
+The packages cover what `koja` invokes: `gcc`, `libc6-dev`, and `libstdc++-14-dev` for the link step, `git` for `koja deps get`, and `ca-certificates` for fetching dependencies over HTTPS. The image ships no C++ compiler because `koja` never invokes one. If you compile C++ sources for FFI, add `g++` to the list.
 
 ## Why there is no Alpine variant
 
 The release binaries link against glibc. An Alpine image needs musl builds of the compiler, which do not exist yet. This also rules out glibc bases older than 2.39, such as Debian bookworm.
+
+An Alpine variant would also stay larger than people expect. The `koja` binary alone is about 150 MB because it statically links LLVM, and the image still needs `gcc` and `git`.
 
 ## Tag policy
 
