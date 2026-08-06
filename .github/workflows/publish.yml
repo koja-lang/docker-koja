@@ -118,6 +118,6 @@ jobs:
         uses: peter-evans/dockerhub-description@v5
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          password: ${{ secrets.DOCKERHUB_README_TOKEN }}
           repository: kojalang/koja
           short-description: Koja compiler toolchain
