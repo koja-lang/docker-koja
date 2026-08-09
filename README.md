@@ -14,7 +14,8 @@ For GitHub Actions CI without a container pull, [setup-koja](https://github.com/
 
 | Tag                        | Dockerfile   | Base                 |
 | -------------------------- | ------------ | -------------------- |
-| `0.16.0`, `0.16`, `latest` | [0.16](0.16) | `debian:trixie-slim` |
+| `0.17.0`, `0.17`, `latest` | [0.17](0.17) | `debian:trixie-slim` |
+| `0.16.0`, `0.16`           | [0.16](0.16) | `debian:trixie-slim` |
 
 Images are published for `linux/amd64` and `linux/arm64` to two registries:
 
@@ -44,7 +45,7 @@ koja test
 Koja compiles to a native binary that needs only glibc and libstdc++ at run time. Both are present in `debian:trixie-slim`. Use the toolchain image as a build stage and copy the binary into a plain base image:
 
 ```dockerfile
-FROM kojalang/koja:0.16 AS build
+FROM kojalang/koja:0.17 AS build
 WORKDIR /app
 COPY . .
 RUN koja deps get && koja build --release
@@ -63,7 +64,7 @@ FROM your-base:tag
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates gcc git libc6-dev libstdc++-14-dev \
     && rm -rf /var/lib/apt/lists/*
-COPY --from=kojalang/koja:0.16.0 /usr/local/bin/koja /usr/local/bin/
+COPY --from=kojalang/koja:0.17.0 /usr/local/bin/koja /usr/local/bin/
 ```
 
 The packages cover what `koja` invokes: `gcc`, `libc6-dev`, and `libstdc++-14-dev` for the link step, `git` for `koja deps get`, and `ca-certificates` for fetching dependencies over HTTPS. The image ships no C++ compiler because `koja` never invokes one. If you compile C++ sources for FFI, add `g++` to the list.
@@ -76,7 +77,7 @@ An Alpine variant would also stay larger than people expect. The `koja` binary a
 
 ## Tag policy
 
-A version tag always installs that exact Koja version. Version tags are never re-pointed to a different Koja release. Tags can be rebuilt on an updated base image so that base security fixes reach users. The `latest` and minor tags (for example `0.16`) move forward with releases.
+A version tag always installs that exact Koja version. Version tags are never re-pointed to a different Koja release. Tags can be rebuilt on an updated base image so that base security fixes reach users. The `latest` and minor tags (for example `0.17`) move forward with releases.
 
 ## Releasing a new version
 
