@@ -14,7 +14,7 @@ For GitHub Actions CI without a container pull, [setup-koja](https://github.com/
 
 | Tag                        | Dockerfile   | Base                 |
 | -------------------------- | ------------ | -------------------- |
-| `0.17.2`, `0.17`, `latest` | [0.17](0.17) | `debian:trixie-slim` |
+| `0.17.3`, `0.17`, `latest` | [0.17](0.17) | `debian:trixie-slim` |
 | `0.16.0`, `0.16`           | [0.16](0.16) | `debian:trixie-slim` |
 
 Earlier patch tags (for example `0.17.1`) stay pullable from both registries but are not rebuilt. Only the newest patch of each maintained minor receives base-image updates.
@@ -66,7 +66,7 @@ FROM your-base:tag
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates gcc git libc6-dev libstdc++-14-dev \
     && rm -rf /var/lib/apt/lists/*
-COPY --from=kojalang/koja:0.17.2 /usr/local/bin/koja /usr/local/bin/
+COPY --from=kojalang/koja:0.17.3 /usr/local/bin/koja /usr/local/bin/
 ```
 
 The packages cover what `koja` invokes: `gcc`, `libc6-dev`, and `libstdc++-14-dev` for the link step, `git` for `koja deps get`, and `ca-certificates` for fetching dependencies over HTTPS. The image ships no C++ compiler because `koja` never invokes one. If you compile C++ sources for FFI, add `g++` to the list.
