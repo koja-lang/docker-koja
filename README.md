@@ -14,7 +14,8 @@ For GitHub Actions CI without a container pull, [setup-koja](https://github.com/
 
 | Tag                        | Dockerfile   | Base                 |
 | -------------------------- | ------------ | -------------------- |
-| `0.17.3`, `0.17`, `latest` | [0.17](0.17) | `debian:trixie-slim` |
+| `0.18.1`, `0.18`, `latest` | [0.18](0.18) | `debian:trixie-slim` |
+| `0.17.3`, `0.17`           | [0.17](0.17) | `debian:trixie-slim` |
 | `0.16.0`, `0.16`           | [0.16](0.16) | `debian:trixie-slim` |
 
 Earlier patch tags (for example `0.17.1`) stay pullable from both registries but are not rebuilt. Only the newest patch of each maintained minor receives base-image updates.
@@ -47,7 +48,7 @@ koja test
 Koja compiles to a native binary that needs only glibc and libstdc++ at run time. Both are present in `debian:trixie-slim`. Use the toolchain image as a build stage and copy the binary into a plain base image:
 
 ```dockerfile
-FROM kojalang/koja:0.17 AS build
+FROM kojalang/koja:0.18 AS build
 WORKDIR /app
 COPY . .
 RUN koja deps get && koja build --release
