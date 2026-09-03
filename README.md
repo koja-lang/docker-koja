@@ -14,7 +14,7 @@ For GitHub Actions CI without a container pull, [setup-koja](https://github.com/
 
 | Tag                        | Dockerfile   | Base                 |
 | -------------------------- | ------------ | -------------------- |
-| `0.18.1`, `0.18`, `latest` | [0.18](0.18) | `debian:trixie-slim` |
+| `0.18.2`, `0.18`, `latest` | [0.18](0.18) | `debian:trixie-slim` |
 | `0.17.3`, `0.17`           | [0.17](0.17) | `debian:trixie-slim` |
 | `0.16.0`, `0.16`           | [0.16](0.16) | `debian:trixie-slim` |
 
