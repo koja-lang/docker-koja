@@ -6,6 +6,9 @@
 # Creates or refreshes <major.minor>/Dockerfile with the version and
 # the sha256 checksums fetched from the GitHub release. New
 # directories copy the newest existing Dockerfile as their template.
+# The README tag table follows: a known minor gets its patch version
+# swapped, a new minor gets a new top row that takes over latest and
+# the build stage example. Prettier realigns the table when installed.
 
 set -euo pipefail
 
@@ -44,3 +47,38 @@ sed -E -i.bak \
 rm -f "$dir/Dockerfile.bak"
 
 echo "stamped $dir/Dockerfile for koja $version"
+
+readme="README.md"
+dir_re="${dir//./\\.}"
+
+if grep -Fq "| [$dir]($dir) |" "$readme"; then
+  sed -E -i.bak \
+    -e "s#^\| \`[0-9]+\.[0-9]+\.[0-9]+\`(.*\| \[${dir_re}\]\(${dir_re}\) \|)#| \`${version}\`\1#" \
+    "$readme"
+  rm -f "$readme.bak"
+  echo "updated the $dir row in $readme"
+else
+  base_image="$(sed -n 's/^FROM \(.*\)$/\1/p' "$dir/Dockerfile" | head -n 1)"
+  [ -n "$base_image" ] || fail "could not read the base image from $dir/Dockerfile"
+  row="| \`${version}\`, \`${dir}\`, \`latest\` | [${dir}](${dir}) | \`${base_image}\` |"
+  # The new row goes under the header separator. The old newest row
+  # loses the latest tag and the build stage example moves to the new
+  # minor.
+  awk -v row="$row" '
+    /^\| -+ \|/ && !inserted { print; print row; inserted = 1; next }
+    /^\| `/ { sub(/, `latest`/, "") }
+    { print }
+  ' "$readme" > "$readme.tmp"
+  mv "$readme.tmp" "$readme"
+  sed -E -i.bak \
+    -e "s#^FROM kojalang/koja:[0-9]+\.[0-9]+ AS build#FROM kojalang/koja:${dir} AS build#" \
+    "$readme"
+  rm -f "$readme.bak"
+  echo "added the $dir row to $readme"
+fi
+
+if command -v prettier >/dev/null 2>&1; then
+  prettier --log-level warn --write "$readme"
+else
+  echo "update.sh: prettier not found, $readme table alignment not refreshed" >&2
+fi

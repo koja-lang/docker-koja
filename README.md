@@ -14,7 +14,7 @@ For GitHub Actions CI without a container pull, [setup-koja](https://github.com/
 
 | Tag                        | Dockerfile   | Base                 |
 | -------------------------- | ------------ | -------------------- |
-| `0.18.3`, `0.18`, `latest` | [0.18](0.18) | `debian:trixie-slim` |
+| `0.18.4`, `0.18`, `latest` | [0.18](0.18) | `debian:trixie-slim` |
 | `0.17.3`, `0.17`           | [0.17](0.17) | `debian:trixie-slim` |
 | `0.16.0`, `0.16`           | [0.16](0.16) | `debian:trixie-slim` |
 
@@ -84,7 +84,7 @@ A version tag always installs that exact Koja version. Version tags are never re
 
 ## Releasing a new version
 
-1. Run `./update.sh <version>`. The script stamps `<major.minor>/Dockerfile` with the version and its release checksums, creating the directory from the newest existing one when needed.
+1. Run `./update.sh <version>`. The script stamps `<major.minor>/Dockerfile` with the version and its release checksums, creating the directory from the newest existing one when needed. It also updates the tag table above and runs `prettier` on this file when it is installed.
 2. Open a PR. Merging to `main` builds and publishes every maintained version, with `latest` pointing at the newest.
 3. To drop support for a version, delete its directory. Published tags stay on the registries.
 

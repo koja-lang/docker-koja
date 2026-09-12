@@ -1,6 +1,6 @@
 FROM debian:trixie-slim
 
-ENV KOJA_VERSION=0.18.3
+ENV KOJA_VERSION=0.18.4
 
 LABEL org.opencontainers.image.authors="Henry Popp <hello@hpopp.dev>" \
       org.opencontainers.image.base.name="docker.io/library/debian:trixie-slim" \
@@ -30,8 +30,8 @@ RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends curl; \
     case "$TARGETARCH" in \
-        amd64) target="linux-x86_64"; sha256="c4946a306aba3b0196d3fe70221ce5e094115d644d1b516e423afebac51943c3" ;; \
-        arm64) target="linux-arm64"; sha256="726ca23af20fd3acdd87b756dec113e6e19fbdbcf68932b5ee43305491a5d9ad" ;; \
+        amd64) target="linux-x86_64"; sha256="5b5d8f95322e79dcf3d5c72c32f287d038290d0b264e7add17cc70059c78e722" ;; \
+        arm64) target="linux-arm64"; sha256="c2eb6cc0d5077991a0376e9a3f953ae38b7dec701b649334b830baa893f3a7c1" ;; \
         *) echo "unsupported architecture: $TARGETARCH" >&2; exit 1 ;; \
     esac; \
     name="koja-v${KOJA_VERSION}-${target}"; \
