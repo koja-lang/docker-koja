@@ -14,7 +14,8 @@ For GitHub Actions CI without a container pull, [setup-koja](https://github.com/
 
 | Tag                        | Dockerfile   | Base                 |
 | -------------------------- | ------------ | -------------------- |
-| `0.18.4`, `0.18`, `latest` | [0.18](0.18) | `debian:trixie-slim` |
+| `0.19.0`, `0.19`, `latest` | [0.19](0.19) | `debian:trixie-slim` |
+| `0.18.4`, `0.18`           | [0.18](0.18) | `debian:trixie-slim` |
 | `0.17.3`, `0.17`           | [0.17](0.17) | `debian:trixie-slim` |
 | `0.16.0`, `0.16`           | [0.16](0.16) | `debian:trixie-slim` |
 
@@ -48,7 +49,7 @@ koja test
 Koja compiles to a native binary that needs only glibc and libstdc++ at run time. Both are present in `debian:trixie-slim`. Use the toolchain image as a build stage and copy the binary into a plain base image:
 
 ```dockerfile
-FROM kojalang/koja:0.18 AS build
+FROM kojalang/koja:0.19 AS build
 WORKDIR /app
 COPY . .
 RUN koja deps get && koja build --release
